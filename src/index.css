@@ -1,0 +1,226 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    background-color: #080b14;
+    color-scheme: dark;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
+
+  body {
+    @apply bg-deep font-sans text-ink antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-display tracking-tight;
+  }
+
+  ::selection {
+    background: rgba(99, 102, 241, 0.4);
+    color: #f8fafc;
+  }
+
+  :focus-visible {
+    outline: 2px solid #38bdf8;
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+
+  section[id] {
+    scroll-margin-top: 5rem;
+  }
+}
+
+@layer components {
+  .container-page {
+    @apply mx-auto w-full max-w-6xl px-5 sm:px-8;
+  }
+
+  .card {
+    @apply rounded-2xl border border-line bg-card/80 shadow-card;
+  }
+
+  .glass {
+    @apply border border-white/[0.08] bg-surface/60 backdrop-blur-xl;
+  }
+
+  .text-gradient {
+    @apply bg-gradient-to-r from-electric via-indigo to-violet bg-clip-text text-transparent;
+  }
+
+  .tag {
+    @apply inline-flex items-center rounded-md border border-indigo/20 bg-indigo/10 px-2 py-0.5 font-mono text-[11px] font-medium text-[#c7d2fe];
+  }
+
+  .eyebrow {
+    @apply font-mono text-xs uppercase tracking-[0.2em] text-electric;
+  }
+
+  .nav-link {
+    @apply relative py-1 text-sm text-muted transition-colors duration-200 hover:text-ink;
+  }
+
+  .nav-link::after {
+    content: "";
+    @apply absolute -bottom-0.5 left-0 h-px w-full origin-left scale-x-0 bg-gradient-to-r from-indigo to-violet transition-transform duration-300;
+  }
+
+  .nav-link:hover::after,
+  .nav-link[aria-current="true"]::after {
+    @apply scale-x-100;
+  }
+
+  .nav-link[aria-current="true"] {
+    @apply text-ink;
+  }
+
+  .bg-grid {
+    background-image:
+      linear-gradient(rgba(148, 163, 184, 0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(148, 163, 184, 0.06) 1px, transparent 1px);
+    background-size: 56px 56px;
+  }
+
+  /* Hero circuit: one dash travels the whole trace (pathLength = 100). */
+  /* Hidden until its (delayed) animation starts, so the intro isn't cluttered. */
+  .trace-pulse {
+    opacity: 0;
+    stroke-dasharray: 12 88;
+    stroke-dashoffset: 100;
+    animation-name: trace-travel;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+  }
+
+  .pad-glow {
+    opacity: 0.12;
+    animation-name: pad-flash;
+    animation-timing-function: ease-out;
+    animation-iteration-count: infinite;
+  }
+
+  @keyframes trace-travel {
+    from {
+      opacity: 1;
+    }
+    to {
+      opacity: 1;
+      stroke-dashoffset: 0;
+    }
+  }
+
+  /* Peaks as the pulse reaches the end of its trace. */
+  @keyframes pad-flash {
+    0%,
+    82% {
+      opacity: 0.12;
+    }
+    92% {
+      opacity: 0.55;
+    }
+    100% {
+      opacity: 0.12;
+    }
+  }
+
+  /* Ring that expands from a pad as the pulse lands. */
+  .pad-ripple {
+    opacity: 0;
+    transform-box: fill-box;
+    transform-origin: center;
+    animation-name: pad-ripple;
+    animation-timing-function: ease-out;
+    animation-iteration-count: infinite;
+  }
+
+  @keyframes pad-ripple {
+    0%,
+    86% {
+      opacity: 0;
+      transform: scale(1);
+    }
+    88% {
+      opacity: 0.9;
+      transform: scale(1);
+    }
+    100% {
+      opacity: 0;
+      transform: scale(3.4);
+    }
+  }
+
+  .chip-orbit {
+    transform-box: view-box;
+    transform-origin: 260px 260px;
+    animation: chip-orbit 40s linear infinite;
+  }
+
+  @keyframes chip-orbit {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  .chip-breathe {
+    animation: chip-breathe 3.6s ease-in-out infinite;
+  }
+
+  @keyframes chip-breathe {
+    0%,
+    100% {
+      opacity: 0.1;
+    }
+    50% {
+      opacity: 0.28;
+    }
+  }
+
+  .chip-led {
+    animation: chip-led 2.4s ease-in-out infinite;
+  }
+
+  @keyframes chip-led {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.35;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .trace-pulse,
+    .pad-ripple {
+      animation: none;
+      opacity: 0;
+    }
+
+    .pad-glow,
+    .chip-orbit,
+    .chip-breathe,
+    .chip-led {
+      animation: none;
+    }
+  }
+
+  .field {
+    @apply w-full rounded-xl border border-line bg-deep/60 px-4 py-3 text-sm text-ink placeholder:text-muted/60 transition-colors duration-200 hover:border-indigo/40 focus:border-indigo focus:outline-none focus:ring-2 focus:ring-indigo/30;
+  }
+
+  .field[aria-invalid="true"] {
+    @apply border-rose-400/70 focus:border-rose-400 focus:ring-rose-400/30;
+  }
+}
